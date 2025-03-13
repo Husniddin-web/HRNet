@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1974
+      POSTGRES_DB: hrnet
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: roboshop
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "3002:3000"
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:

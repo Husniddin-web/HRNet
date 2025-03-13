@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HR Account Approved</title>
+  </head>
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    "
+  >
+    <table
+      align="center"
+      width="600"
+      style="
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <tr>
+        <td align="center">
+          <h1 style="color: #333;">✅ Your HR Account is Approved!</h1>
+          <p style="color: #555; font-size: 16px;">Hello,
+            <b>{{user.full_name}}</b></p>
+          <p style="color: #555; font-size: 16px;">
+            Congratulations! Your HR account has been approved by an admin. You
+            can now access the system and manage employee records.
+          </p>
+          <table
+            width="100%"
+            style="margin: 20px 0; border-collapse: collapse;"
+          >
+            <tr>
+              <td
+                style="
+                  padding: 10px;
+                  background-color: #f9f9f9;
+                  border: 1px solid #ddd;
+                "
+              >
+                <strong>Email:</strong>
+                {{user.email}}
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  padding: 10px;
+                  background-color: #f9f9f9;
+                  border: 1px solid #ddd;
+                "
+              >
+                <strong>Phone Number:</strong>
+                {{user.phone_number}}
+              </td>
+            </tr>
+          </table>
+          <p style="color: #555; font-size: 16px;">
+            Click the button below to get started with the HR system:
+          </p>
+          <p>
+            <a
+              href=""
+              style="
+                display: inline-block;
+                padding: 12px 24px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #fff;
+                background-color: #28a745;
+                text-decoration: none;
+                border-radius: 5px;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+              "
+            >
+              Access Your HR Panel
+            </a>
+          </p>
+          <p style="color: #777; font-size: 14px;">
+            Please register with your phone out bot
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

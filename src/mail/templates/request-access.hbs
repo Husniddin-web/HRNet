@@ -1,0 +1,25 @@
+<h1>{{hr_full_name}} sizning worker history kormoqchi</h1>
+
+<p>HR ma'lumotlari:</p>
+<ul>
+  <li><strong>F.I.O:</strong> {{hr_full_name}}</li>
+  <li><strong>Email:</strong> {{hr_email}}</li>
+</ul>
+
+<p>Qabul qilish yoki rad etish uchun quyidagi tugmalarni bosing:</p>
+
+<!-- Accept Button -->
+<a
+  href="http://localhost:3000/api/worker-history/verify-access-request/{{access_token}}?status=accept"
+  style="display: inline-block; padding: 10px 20px; color: white; background-color: green; text-decoration: none; border-radius: 5px;"
+>
+  ✅ Qabul qilish
+</a>
+
+<!-- Reject Button -->
+<a
+  href="http://localhost:3000/api/worker-history/verify-access-request/{{access_token}}?status=reject"
+  style="display: inline-block; padding: 10px 20px; color: white; background-color: red; text-decoration: none; border-radius: 5px;"
+>
+  ❌ Rad etish
+</a>

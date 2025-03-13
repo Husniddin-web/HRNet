@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SocialMedia {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  icon String
+}
+
+model Admin {
+  id             Int              @id @default(autoincrement())
+  full_name      String
+  phone_number   String
+  email          String           @unique
+  password       String
+  refresh_token  String?
+  status         Status           @default(INACTIVE)
+  role           ROLE             @default(ADMIN)
+  tg_user_id     BigInt?          @unique
+  tg_user        TgUser?          @relation(fields: [tg_user_id], references: [user_id])
+  HR             HR[]
+  Company        Company[]
+  last_active    DateTime?
+  is_busy        Boolean?         @default(false)
+  request_count  Int?             @default(0)
+  supportReqeust supportReqeust[]
+}
+
+model HR {
+  id               Int             @id @default(autoincrement())
+  full_name        String
+  email            String          @unique
+  password         String
+  phone_number     String
+  status           Status          @default(PENDING)
+  refresh_token    String?
+  confirm_by_id    Int?
+  confirm_by       Admin?          @relation(fields: [confirm_by_id], references: [id])
+  tg_user_id       BigInt?
+  tg_user          TgUser?         @relation(fields: [tg_user_id], references: [user_id], onDelete: Cascade)
+  is_associate     Boolean         @default(false)
+  Company          Company[]
+  CompanyHR        CompanyHR[]
+  rejection_reason String?
+  AccessRequest    AccessRequest[]
+}
+
+model Company {
+  id                    Int             @id @default(autoincrement())
+  name                  String          @unique
+  address               String
+  director_full_name    String
+  director_phone        String
+  director_email        String
+  company_documentation String
+  status                Status          @default(PENDING)
+  confirm_by_id         Int?
+  confirm_by            Admin?          @relation(fields: [confirm_by_id], references: [id])
+  created_by_id         Int?
+  created_by            HR?             @relation(fields: [created_by_id], references: [id])
+  CompanyHR             CompanyHR[]
+  WorkerHistory         WorkerHistory[]
+  rejection_reason      String?
+}
+
+model CompanyHR {
+  id          Int     @id @default(autoincrement())
+  hr_id       Int
+  company_id  Int
+  hr          HR      @relation(fields: [hr_id], references: [id])
+  company     Company @relation(fields: [company_id], references: [id])
+  status      Status  @default(PENDING)
+  hr_document String
+
+  @@unique([hr_id, company_id])
+}
+
+model Employee {
+  id              Int             @id @default(autoincrement())
+  email           String          @unique
+  full_name       String
+  phone_number    String
+  status          Status          @default(INACTIVE)
+  password        String?
+  refresh_token   String?
+  tg_user_id      BigInt?
+  tg_user         TgUser?         @relation(fields: [tg_user_id], references: [user_id])
+  is_temproray    Boolean?        @default(false)
+  WorkerHistory   WorkerHistory[]
+  activation_link String?
+  AccessRequest   AccessRequest[]
+}
+
+model WorkerHistory {
+  id                Int           @id @default(autoincrement())
+  employee_id       Int
+  employee          Employee?     @relation(fields: [employee_id], references: [id])
+  company_id        Int
+  company           Company?      @relation(fields: [company_id], references: [id])
+  hired_at          DateTime      @default(now())
+  employment_type   String
+  position          String
+  left_at           DateTime?
+  performance_score Int?
+  working_mode      String
+  positive_feedback String?
+  negative_feedback String?
+  status            WorkerStatus? @default(ACTIVE)
+}
+
+model Credentials {
+  id           Int     @id @default(autoincrement())
+  email        String? @unique
+  phone_number String? @unique
+}
+
+model AccessRequest {
+  id           Int      @id @default(autoincrement())
+  hr_id        Int
+  hr           HR       @relation(fields: [hr_id], references: [id])
+  employe_id   Int
+  employe      Employee @relation(fields: [employe_id], references: [id])
+  token        String?
+  request_date DateTime @default(now())
+  status       Status   @default(PENDING)
+  link         String?
+}
+
+enum WorkerStatus {
+  ACTIVE
+  RESIGNED
+  TERMINATED
+  RETIRED
+}
+
+model TgUser {
+  user_id      BigInt     @id
+  user_name    String?
+  first_name   String?
+  last_name    String?
+  phone_number String?    @unique
+  last_state   String?    @default("finished")
+  status       Status     @default(ACTIVE)
+  role         ROLE?
+  Admin        Admin[]
+  HR           HR[]
+  Employee     Employee[]
+}
+
+model supportReqeust {
+  id       Int    @id @default(autoincrement())
+  role     ROLE?
+  email    String
+  problem  String
+  answer   String?
+  admin_id Int?
+
+  admin  Admin? @relation(fields: [admin_id], references: [id])
+  status Status @default(PENDING)
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+  PENDING
+}
+
+enum ROLE {
+  USER
+  HR
+  ADMIN
+  SUPERADMIN
+}
