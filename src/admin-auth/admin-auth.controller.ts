@@ -28,8 +28,8 @@ import { AdminJwtAuth } from "../common/guards/admin-jwt-auth.guard";
 export class AdminAuthController {
   constructor(private readonly adminAuthService: AdminAuthService) {}
 
-  
-  // @UseGuards(AdminJwtAuth)
+  @Roles(ROLE.SUPERADMIN)
+  @UseGuards(AdminJwtAuth, RolesGuard)
   @ApiOperation({
     summary: "Register Admin ",
     description: "Register Admin by SuperAdmin",
@@ -38,7 +38,7 @@ export class AdminAuthController {
     description: "Successfulyy created check admin email send login",
     status: 201,
   })
-  // @ApiBearerAuth("token")
+  @ApiBearerAuth("token")
   @Post("register")
   async registerAdmin(@Body() registerAdminDto: CreateAdminDto) {
     return this.adminAuthService.adminRegister(registerAdminDto);

@@ -101,8 +101,11 @@ export class AdminAuthService {
 
     res.clearCookie("refresh_token", { httpOnly: true, secure: true });
 
+    console.log("addd commit");
     return { message: "Successfully signed out" };
+    
   }
+
 
   async refreshTokenAdmin(
     adminId: number,

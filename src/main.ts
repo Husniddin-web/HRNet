@@ -15,6 +15,7 @@ async function bootstrap() {
 
     const logger = app.get(AppLogger);
 
+
     app.useGlobalFilters(new AllExceptionsFilter(logger));
 
     app.useGlobalInterceptors(new ResponseFormatInterceptor(logger));
